@@ -1,0 +1,282 @@
+{
+  "name": "form submission response",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Digital Marketing Lead Form",
+        "formDescription": "Tell us about your marketing requirements",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "phone number",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "what service do you need",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "social media marketing"
+                  },
+                  {
+                    "option": "SEO"
+                  },
+                  {
+                    "option": "Google Ads"
+                  },
+                  {
+                    "option": "Content Marketing"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "what is your budget?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Below ₹10,000"
+                  },
+                  {
+                    "option": "₹10,000 - ₹25,000"
+                  },
+                  {
+                    "option": "₹25,000 - ₹50,000"
+                  },
+                  {
+                    "option": "Above ₹50,000"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d50cc522-b4b6-48ff-aa99-d3117c120aa0",
+      "name": "On form submission",
+      "webhookId": "aadfee44-27e6-46bf-ab88-a6505b73537f"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1qFBoSAc1dtudvn6W7vQ8pwOw2B3Gro9zSHPHw2ticUo",
+          "mode": "list",
+          "cachedResultName": "digital marketing lead flow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFBoSAc1dtudvn6W7vQ8pwOw2B3Gro9zSHPHw2ticUo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1qFBoSAc1dtudvn6W7vQ8pwOw2B3Gro9zSHPHw2ticUo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name ": "={{ $json.Name }}",
+            "Email": "={{ $json.email }}",
+            "Phone number": "={{ $json['phone number'] }}",
+            "Service": "={{ $json['what service do you need'] }}",
+            "Budget": "={{ $json['what is your budget?'] }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name ",
+              "displayName": "Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone number",
+              "displayName": "Phone number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6eeb43b7-0461-46d1-bf48-f63d351a65a8",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Ehc9Xijb6u6L60FF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "johnkaviya1234@gmail.com",
+        "subject": "new lead received",
+        "message": "=<h3>🔔 New Lead Received</h3>\n\n<p><b>Name:</b>{{ $('On form submission').item.json.Name }}</p>\n<p><b>email:</b>{{ $('On form submission').item.json.email }}</p>\n<p><b>Phone:</b>{{ $('On form submission').item.json['phone number'] }}</p>\n<p><b>Service:</b>{{ $('On form submission').item.json['what service do you need'] }}</p>\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "6297f4fd-a7cb-48cc-9064-ce63bc254699",
+      "name": "Send a message",
+      "webhookId": "4426d057-2f97-40df-847d-a4ed1fc04c27",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "GfXKu33nV0kxAD4U",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0BV42VKHA9",
+          "mode": "list",
+          "cachedResultName": "new-leadss"
+        },
+        "text": "=🚨 New Lead Received!\n\nName: {{ $json['Name '] }}\nEmail: {{$json[\"Email\"]}}\nPhone: {{$json[\"Phone number\"]}}\nService: {{ $json.Service }}\nBudget: {{ $json.Budget }}\n",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "9f829809-c8c7-4277-8527-a6e3e34e572f",
+      "name": "Send a message1",
+      "webhookId": "dba5c800-f11d-4b2e-b9c5-354717161c7e",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "JwN4GcCk5BYrw444",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2d7f6a22-9d48-4aae-831f-ad6fdd228356",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7f7e34df925e7aeac29722ed9d50cc3ed06c68cc69c2d15e1b8608a7d3b98acc"
+  },
+  "nodeGroups": [],
+  "id": "c7IpVN6Ne4dfWzMS",
+  "tags": []
+}
